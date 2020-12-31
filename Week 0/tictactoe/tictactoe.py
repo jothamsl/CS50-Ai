@@ -49,10 +49,10 @@ def actions(board):
     Returns set of all possible actions (i, j) available on the board.
     """
     actions = set()
-    for r, row in enumerate(board, start=0):
-        for q, column in enumerate(row, start=0):
-            if column == EMPTY:
-                actions.add((r, q))
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            if board[i][j] == EMPTY:
+                actions.add((i, j))
     return actions
 
 
@@ -115,6 +115,7 @@ def utility(board):
     else:
         return 0
 
+
 def minimax(board):
     """
     Returns the optimal action for the current player on the board.
@@ -122,37 +123,38 @@ def minimax(board):
     if terminal(board):
         return utility(board)
 
-    best_move = None 
+    best_move = None
     if player(board) == X:
         best_value = -math.inf
         for action in actions(board):
             x = Min(result(board, action))
             if x > best_value:
-                best_value = x 
+                best_value = x
                 best_move = action
     elif player(board) == O:
-        best_value = math.inf 
+        best_value = math.inf
         for action in actions(board):
             x = Max(result(board, action))
             if x < best_value:
-                best_value = x 
+                best_value = x
                 best_move = action
     print(best_move)
     return best_move
-        
+
 
 def Max(board):
     if terminal(board):
         return utility(board)
-    best_value = -math.inf 
+    best_value = -math.inf
     for action in actions(board):
         best_value = max(best_value, Min(result(board, action)))
     return best_value
 
+
 def Min(board):
     if terminal(board):
         return utility(board)
-    best_value = math.inf 
+    best_value = math.inf
     for action in actions(board):
         best_value = min(best_value, Max(result(board, action)))
     return best_value
